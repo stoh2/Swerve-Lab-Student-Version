@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
 
 public class SwerveDrive extends SubsystemBase {
@@ -21,6 +22,10 @@ public class SwerveDrive extends SubsystemBase {
             /***
              * We need to initialize 4 swerve modules here. Get familiar with the SwerveModule... notation.
              */
+            new SwerveModule(),
+            new SwerveModule(),
+            new SwerveModule(),
+            new SwerveModule()
         );
     }
     
@@ -58,17 +63,17 @@ public class SwerveDrive extends SubsystemBase {
         /***
          * Look into the ChassisSpeeds constructor. Think about the velocity_x, velocity_y, and rotation
          */
-        ChassisSpeeds speeds = ;
+        ChassisSpeeds speeds = new ChassisSpeeds(velocity.getX(), velocity.getY(), rot);
         
         /***
          * Hint: Look for SwerveDriveKinematics in this project. Might need to do some research.
          */
-        SwerveModuleState[] states = ;
+        SwerveModuleState[] states = Constants.SwerveConstants.KINEMATICS.toSwerveModuleStates(speeds);
         
         /***
          * What's missing here? Think about what the point of this method is?
          */
-        SwerveDriveKinematics.desaturateWheelSpeeds(states, );
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.SwerveConstants.MAX_SPEED_MPS);
         
         setDesiredStates(states);
     }
@@ -79,6 +84,10 @@ public class SwerveDrive extends SubsystemBase {
              * Look at the constructors for SwerveModuleState.
              * Visualize what the angles and speeds of each swerve module should be.
              */
+            new SwerveModuleState(0,new Rotation2d(45)),
+            new SwerveModuleState(0,new Rotation2d(-45)),
+            new SwerveModuleState(0,new Rotation2d(-45)),
+            new SwerveModuleState(0,new Rotation2d(45))
         };
         
         setDesiredStates(states);
@@ -92,6 +101,10 @@ public class SwerveDrive extends SubsystemBase {
         /***
          * Use the modules array and the states array + the setDesiredState method from SwerveModule class
          */
+        modules[0].setDesiredState(states[0]);
+        modules[1].setDesiredState(states[1]);
+        modules[2].setDesiredState(states[2]);
+        modules[3].setDesiredState(states[3]);
     }
     
     public void resetOdometry(Pose2d newPose) {
